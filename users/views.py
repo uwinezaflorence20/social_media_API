@@ -20,3 +20,9 @@ def login(request):
     if user:
         return Response({"message": "Login successful"})
     return Response({"error": "Invalid credentials"}, status=400)
+
+@api_view(['GET'])
+def get_all_users(request):
+    users = users.objects.all()
+    serializer = RegisterSerializer(users, many=True)
+    return Response(serializer.data)
