@@ -3,8 +3,7 @@ from django.urls import path, include
 from .views import home
 
 urlpatterns = [
-    path('', home),  # 👈 HOME PAGE
+    path('', home),                  # Home page
     path('admin/', admin.site.urls),
-    path('api/users/', include('users.urls')),
-    
+    path('api/users/', include('users.urls')),  # All user endpoints
 ]

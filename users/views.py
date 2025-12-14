@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import RegisterSerializer
@@ -16,6 +16,7 @@ def login(request):
     username = request.data.get('username')
     password = request.data.get('password')
 
+    from django.contrib.auth import authenticate
     user = authenticate(username=username, password=password)
     if user:
         return Response({"message": "Login successful"})
@@ -23,6 +24,9 @@ def login(request):
 
 @api_view(['GET'])
 def get_all_users(request):
-    users = users.objects.all()
+    users = User.objects.all()
     serializer = RegisterSerializer(users, many=True)
+    # Don't return passwords
+    for user_data in serializer.data:
+        user_data.pop('password', None)
     return Response(serializer.data)
